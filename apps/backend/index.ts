@@ -1,4 +1,10 @@
 import { ApolloServer, gql } from "apollo-server";
+import { PrismaClient } from "@prisma/client";
+import BookResolvers from "./src/resolvers/Book";
+import { DateTimeTypeDefinition } from "graphql-scalars";
+import PasteResolvers from "./src/resolvers/Paste";
+
+const prisma = new PrismaClient();
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -8,48 +14,61 @@ const typeDefs = gql`
 
 	# This "Book" type defines the queryable fields for every book in our data source.
 	type Book {
+		id: Int
 		title: String
 		author: String
 	}
 
-	# The "Query" type is special: it lists all of the available queries that
-	# clients can execute, along with the return type for each. In this
-	# case, the "books" query returns an array of zero or more Books (defined above).
+	type Paste {
+		id: Int
+		createdAt: DateTime
+		updatedAt: DateTime
+		published: Boolean
+		title: String
+		hasPassword: Boolean
+		passwordHash: String
+		content: String
+	}
+
 	type Query {
 		books: [Book]
+		book(id: Int!): Book
+		pastes: [Paste]
+		paste(id: Int!, password: String): Paste
+	}
+
+	type Mutation {
+		addBook(title: String!): Book
+		addPaste(
+			title: String!
+			content: String!
+			hasPassword: Boolean!
+			password: String
+		): Paste
 	}
 `;
 
-const books = [
-	{
-		title: "The Awakening",
-
-		author: "Kate Chopin",
-	},
-
-	{
-		title: "City of Glass",
-
-		author: "Paul Auster",
-	},
-];
-
 const resolvers = {
 	Query: {
-		books: () => books,
+		books: BookResolvers.queries.all,
+		book: BookResolvers.queries.single,
+		pastes: PasteResolvers.getAll,
+		paste: PasteResolvers.getById,
+	},
+	Mutation: {
+		addBook: BookResolvers.mutations.addBook,
+		addPaste: PasteResolvers.addNew,
 	},
 };
 
 const server = new ApolloServer({
-	typeDefs,
-
+	typeDefs: [DateTimeTypeDefinition, typeDefs],
 	resolvers,
-
 	csrfPrevention: true,
 });
 
 // The `listen` method launches a web server.
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url }: { url: string }) => {
 	console.log(`🚀  Server ready at ${url}`);
 });

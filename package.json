@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
+	"private": true,
 	"scripts": {
 		"build": "turbo run build",
 		"test": "turbo run test",
@@ -25,5 +26,9 @@
 	"dependencies": {
 		"serve": "^13.0.2",
 		"typescript": "^4.5.4"
-	}
+	},
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	]
 }
