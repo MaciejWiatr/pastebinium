@@ -9,7 +9,8 @@
 		"test": "turbo run test",
 		"lint": "turbo run lint",
 		"dev": "turbo run dev",
-		"start": "turbo run start"
+		"start": "turbo run start",
+		"install": "turbo run install"
 	},
 	"keywords": [],
 	"author": "",

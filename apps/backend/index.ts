@@ -64,7 +64,10 @@ const resolvers = {
 const server = new ApolloServer({
 	typeDefs: [DateTimeTypeDefinition, typeDefs],
 	resolvers,
-	csrfPrevention: true,
+	csrfPrevention: false,
+	cors: {
+		origin: "*",
+	},
 });
 
 // The `listen` method launches a web server.

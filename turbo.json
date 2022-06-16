@@ -25,6 +25,7 @@
 		"dev": {},
 		"start": {
 			"dependsOn": ["build"]
-		}
+		},
+		"install": {}
 	}
 }

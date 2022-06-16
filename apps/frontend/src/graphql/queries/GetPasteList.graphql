@@ -1,0 +1,8 @@
+query GetPasteLists {
+	pastes {
+		id
+		title
+		hasPassword
+		createdAt
+	}
+}

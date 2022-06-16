@@ -11,8 +11,17 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "vueCompilerOptions": {
+    "experimentalImplicitWrapComponentOptionsWithDefineComponent": true,
+  },
+  "include": ["src/**/*.js", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "src/graphql/generated/api.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
